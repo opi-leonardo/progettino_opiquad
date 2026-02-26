@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Inertia } from '@inertiajs/inertia';
-
+import { router } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Table, Button, notification } from 'antd';
 import Layout from '../Layout';
 
@@ -66,13 +66,9 @@ const Index: Page<Props> = ({ users, success, error }) => {
     <div style={{ padding: 40 }}>
       <h1>All Users</h1>
 
-      <Button
-        type="primary"
-        style={{ marginBottom: 20 }}
-        onClick={() => Inertia.get('/users/create')}
-      >
-        Add User
-      </Button>
+      <Link href="/users/create">
+        <Button type="primary">Add User</Button>
+      </Link>
 
       <Table
         dataSource={users}

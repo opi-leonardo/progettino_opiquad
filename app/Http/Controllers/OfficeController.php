@@ -60,7 +60,8 @@ class OfficeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $office = Offices::findOrFail($id);
+        return Inertia::render('Offices/Edit', ['office' => $office]);
     }
 
     /**
@@ -68,7 +69,15 @@ class OfficeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $office = Offices::findOrFail($id);
+        $office->update([
+            'nome'                  => $request->nome,
+            'inizioOrarioIngresso'  => $request->inizioOrarioIngresso,
+            'fineOrarioIngresso'    => $request->fineOrarioIngresso,
+            'inizioOrarioUscita'    => $request->inizioOrarioUscita,
+            'fineOrarioUscita'      => $request->fineOrarioUscita
+        ]);
+        return redirect()->route('offices.index');
     }
 
     /**
