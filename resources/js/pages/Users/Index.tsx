@@ -69,12 +69,12 @@ const Index: Page<Props> = ({ users, success, error }) => {
     <div style={{ padding: 40 }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"10px" }}>
         <Title level={2} style={{ margin: 0 }}>
-          All Offices
+          All Users
         </Title>
 
 
-        <Link href="/offices/create">
-          <Button type="primary">Add Office</Button>
+        <Link href="/users/create">
+          <Button type="primary">Add User</Button>
         </Link>
       </div>
 
