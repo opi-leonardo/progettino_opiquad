@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 import { Button, Input, Form, Select } from 'antd';
 import Layout from '../Layout';
@@ -35,7 +35,7 @@ const Create: Page<Props> = ({ offices }) => {
   };
 
   const handleSubmit = (values: any) => {
-    Inertia.post('/users', values, {
+    router.post('/users', values, {
       onError: (errors) => {
         console.log(errors);
       },

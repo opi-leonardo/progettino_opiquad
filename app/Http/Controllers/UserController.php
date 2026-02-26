@@ -46,7 +46,7 @@ class UserController extends Controller
             'office_id' => $request->officeId,
 
         ]);
-        return redirect()->route('users.index')->with('success', 'User created successfully!');
+        return redirect('/users')->with('success', 'User created successfully!');
     }
 
     /**

@@ -1,5 +1,5 @@
 import React, { useState, FormEvent } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 
 import { Button, Input, Form, Select, TimePicker} from 'antd';
 import Layout from '../Layout';
@@ -32,12 +32,12 @@ const Create: Page = ({ }) => {
         fineOrarioUscita: values.fineOrarioUscita.format('HH:mm'),
     };
 
-    Inertia.post('/offices', formatted, {
+    router.post('/offices', formatted, {
         onError: (errors) => {
         console.log(errors);
         },
     });
-    };
+  };
 
   return (
     <div style={{     
@@ -59,51 +59,51 @@ const Create: Page = ({ }) => {
       >
 
       <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
-      <Input 
-        type='text' 
-        value={nome}
-        onChange={e => setName(e.target.value)}
-        required
-      />
+        <Input 
+          type='text' 
+          value={nome}
+          onChange={e => setName(e.target.value)}
+          required
+        />
       </Form.Item>
 
-    <Form.Item
-    name="inizioOrarioIngresso"
-    label="Inizio Orario Ingresso"
-    rules={[{ required: true, message: 'Seleziona l’orario' }]}
-    >
-    <TimePicker format="HH:mm" />
-    </Form.Item>
-
-    <Form.Item
-        name="fineOrarioIngresso"
-        label="Fine Orario Ingresso"
-        rules={[{ required: true, message: 'Seleziona l’orario' }]}
-        >
+      <Form.Item
+          name="inizioOrarioIngresso"
+          label="Inizio Orario Ingresso"
+          rules={[{ required: true, message: 'Seleziona l’orario' }]}
+      >
         <TimePicker format="HH:mm" />
-    </Form.Item>
+      </Form.Item>
 
-    <Form.Item
-        name="inizioOrarioUscita"
-        label="Inizio Orario Uscita"
-        rules={[{ required: true, message: 'Seleziona l’orario' }]}
-        >
-        <TimePicker format="HH:mm" />
-    </Form.Item>
+      <Form.Item
+          name="fineOrarioIngresso"
+          label="Fine Orario Ingresso"
+          rules={[{ required: true, message: 'Seleziona l’orario' }]}
+          >
+          <TimePicker format="HH:mm" />
+      </Form.Item>
 
-    <Form.Item
-        name="fineOrarioUscita"
-        label="Fine Orario Uscita"
-        rules={[{ required: true, message: 'Seleziona l’orario' }]}
-        >
-        <TimePicker format="HH:mm" />
-    </Form.Item>
+      <Form.Item
+          name="inizioOrarioUscita"
+          label="Inizio Orario Uscita"
+          rules={[{ required: true, message: 'Seleziona l’orario' }]}
+          >
+          <TimePicker format="HH:mm" />
+      </Form.Item>
 
-    <Form.Item>
-        <Button type="primary" htmlType="submit">
-        Submit
-        </Button>
-    </Form.Item>
+      <Form.Item
+          name="fineOrarioUscita"
+          label="Fine Orario Uscita"
+          rules={[{ required: true, message: 'Seleziona l’orario' }]}
+          >
+          <TimePicker format="HH:mm" />
+      </Form.Item>
+
+      <Form.Item>
+          <Button type="primary" htmlType="submit">
+          Submit
+          </Button>
+      </Form.Item>
     </Form>
   </div>
   );

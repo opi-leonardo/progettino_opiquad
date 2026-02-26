@@ -1,5 +1,5 @@
 import React from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react';
 import { Table, Button, Space, Typography } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
@@ -55,19 +55,12 @@ const Index: Page<Props> = ({ offices }) => {
       key: 'actions',
       render: (_: any, record: Office) => (
         <>
-          <Button
-            type="link"
-            onClick={() => Inertia.get(`/offices/${record.id}/edit`)}
-          >
-            Edit
-          </Button>
-          <Button
-            type="link"
-            danger
-            onClick={() => Inertia.delete(`/offices/${record.id}`)}
-          >
-            Delete
-          </Button>
+          <Link href={`/offices/${record.id}/edit`}>
+            <Button type="link">Edit</Button>
+          </Link>
+          <Link href={`/offices/delete`}> 
+            <Button type="link">Delete</Button>
+          </Link>
         </>
       ),
     },
