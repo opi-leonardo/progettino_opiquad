@@ -1,8 +1,9 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
-import { Table, Button, Space, Typography } from 'antd';
+import { Table, Button, Typography, Popconfirm, message, Alert } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 interface Office {
   id: number;
@@ -24,32 +25,18 @@ type Page<P = {}> = React.FC<P> & {
 const { Title } = Typography;
 
 const Index: Page<Props> = ({ offices }) => {
+
+  const { errors } = usePage().props as any;
+
+  // dopo il Title:
+  {errors?.error && <Alert message={errors.error} type="error" showIcon style={{ marginBottom: 16 }} />}
+
   const columns = [
-    {
-      title: 'Nome',
-      dataIndex: 'nome',
-      key: 'nome',
-    },
-    {
-      title: 'Inizio Ingresso',
-      dataIndex: 'inizioOrarioIngresso',
-      key: 'inizioOrarioIngresso',
-    },
-    {
-      title: 'Fine Ingresso',
-      dataIndex: 'fineOrarioIngresso',
-      key: 'fineOrarioIngresso',
-    },
-    {
-      title: 'Inizio Uscita',
-      dataIndex: 'inizioOrarioUscita',
-      key: 'inizioOrarioUscita',
-    },
-    {
-      title: 'Fine Uscita',
-      dataIndex: 'fineOrarioUscita',
-      key: 'fineOrarioUscita',
-    },
+    { title: 'Nome', dataIndex: 'nome', key: 'nome' },
+    { title: 'Inizio Ingresso', dataIndex: 'inizioOrarioIngresso', key: 'inizioOrarioIngresso' },
+    { title: 'Fine Ingresso', dataIndex: 'fineOrarioIngresso', key: 'fineOrarioIngresso' },
+    { title: 'Inizio Uscita', dataIndex: 'inizioOrarioUscita', key: 'inizioOrarioUscita' },
+    { title: 'Fine Uscita', dataIndex: 'fineOrarioUscita', key: 'fineOrarioUscita' },
     {
       title: 'Actions',
       key: 'actions',
@@ -58,9 +45,22 @@ const Index: Page<Props> = ({ offices }) => {
           <Link href={`/offices/${record.id}/edit`}>
             <Button type="link">Edit</Button>
           </Link>
-          <Link href={`/offices/delete`}> 
-            <Button type="link">Delete</Button>
-          </Link>
+
+          <Popconfirm
+            placement="top"
+            title="Elimina ufficio"
+            description="Sei sicuro di voler eliminare questo ufficio?"
+            okText="Sì"
+            cancelText="No"
+            onConfirm={() => {
+              router.delete(`/offices/${record.id}`, {
+                onSuccess: () => message.success('Ufficio eliminato con successo!'),
+                onError: () => message.error("Errore durante l'eliminazione."),
+              });
+            }}
+          >
+            <Button type="link" danger>Delete</Button>
+          </Popconfirm>
         </>
       ),
     },
@@ -68,23 +68,14 @@ const Index: Page<Props> = ({ offices }) => {
 
   return (
     <div style={{ padding: 40 }}>
-
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"10px" }}>
-        <Title level={2} style={{ margin: 0 }}>
-          All Offices
-        </Title>
-
-
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+        <Title level={2} style={{ margin: 0 }}>All Offices</Title>
         <Link href="/offices/create">
           <Button type="primary">Add Office</Button>
         </Link>
       </div>
 
-      <Table
-        dataSource={offices}
-        columns={columns}
-        rowKey="id"
-      />
+      <Table dataSource={offices} columns={columns} rowKey="id" />
     </div>
   );
 };

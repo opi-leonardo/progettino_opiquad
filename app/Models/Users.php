@@ -14,8 +14,8 @@ class Users extends Model
         'office_id'
     ];
 
-    public function office()
+    public function users()
     {
-        return $this->belongsTo(Offices::class);
+        return $this->hasMany(Users::class, 'office_id');
     }
 }

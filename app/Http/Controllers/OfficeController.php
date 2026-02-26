@@ -85,6 +85,8 @@ class OfficeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $office = Offices::findOrFail($id);
+        $office->delete();
+        return redirect()->route('offices.index');
     }
 }
