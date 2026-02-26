@@ -1,6 +1,6 @@
 import React from 'react';
 import { Inertia } from '@inertiajs/inertia';
-import { Table, Button } from 'antd';
+import { Table, Button, Space, Typography } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
 
@@ -20,6 +20,8 @@ interface Props {
 type Page<P = {}> = React.FC<P> & {
   layout?: (page: React.ReactElement) => React.ReactNode;
 };
+
+const { Title } = Typography;
 
 const Index: Page<Props> = ({ offices }) => {
   const columns = [
@@ -73,11 +75,17 @@ const Index: Page<Props> = ({ offices }) => {
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>All Offices</h1>
 
-      <Link href="/offices/create">
-        <Button type="primary">Add Office</Button>
-      </Link>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"10px" }}>
+        <Title level={2} style={{ margin: 0 }}>
+          All Offices
+        </Title>
+
+
+        <Link href="/offices/create">
+          <Button type="primary">Add Office</Button>
+        </Link>
+      </div>
 
       <Table
         dataSource={offices}
