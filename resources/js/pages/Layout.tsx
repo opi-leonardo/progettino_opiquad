@@ -6,14 +6,15 @@ import { Content } from 'antd/es/layout/layout';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   
-  const [currentSection, setCurrentSection] = useState<string>('user');
+  const [currentSection, setCurrentSection] = useState<string>('users');
   const { url } = usePage();
 
+  //TODO: qui
   useEffect(() => {
     if (url === '/') {
       router.visit('/users', { replace: true });
     }
-  }, []); 
+  },[]); 
 
   useEffect(() => {
     if (url.startsWith('/users')) {
@@ -49,8 +50,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         />
       </Sider>
 
-      <AntLayout style={{ padding: '24px' }}>
-        <Content key={url}> 
+      <AntLayout>
+        <Content key={url} style={{ overflowY: 'auto', padding: '20px' }}> 
           {children}
         </Content>
       </AntLayout>
