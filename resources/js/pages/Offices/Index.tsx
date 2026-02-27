@@ -111,7 +111,7 @@ const Index: Page<Props> = ({ offices, success, error }) => {
   return (
     <div style={{ padding: 40 }}>
 
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"10px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"20px" }}>
         <Title level={2} style={{ margin: 0 }}>
           All Offices
         </Title>
