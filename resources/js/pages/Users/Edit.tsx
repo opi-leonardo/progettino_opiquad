@@ -38,7 +38,7 @@ const Edit: Page<Props> = ({ user, offices }) => {
     router.put(`/users/${user.id}`, values, {
       onError: (errors) => {
         notification.error({ title: Object.values(errors)[0] });
-        console.log(errors)},
+        },
     });
   };
 

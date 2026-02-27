@@ -49,28 +49,18 @@ class OfficeController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Offices $office)
     {
-        $office = Offices::findOrFail($id);
         return Inertia::render('Offices/Edit', ['office' => $office]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreOfficeRequest $request, string $id)
+    public function update(StoreOfficeRequest $request, Offices $office)
     {
-        $office = Offices::findOrFail($id);
         $office->update([
             'nome'                  => $request->nome,
             'inizioOrarioIngresso'  => $request->inizioOrarioIngresso,

@@ -28,7 +28,6 @@ const Index: Page<Props> = ({ users, success, error }) => {
   const handleDelete = (id: number) => {
     router.delete(`/users/${id}`, {
       onError: (errors) => {
-        console.log(errors);
         notification.error({ title: Object.values(errors)[0] });
       },
     });

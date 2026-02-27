@@ -38,10 +38,8 @@ const Create: Page<Props> = ({ offices }) => {
   const handleSubmit = (values: any) => {
     router.post('/users', values, {
       onSuccess:(message) => {
-        console.log(message);
       },
       onError: (errors) => {
-        console.log(errors);
         notification.error({ title: Object.values(errors)[0] });
       },
     });

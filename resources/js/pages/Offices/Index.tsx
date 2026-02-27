@@ -30,7 +30,6 @@ const Index: Page<Props> = ({ offices, success, error }) => {
   const handleDelete = (id: number) => {
     router.delete(`/offices/${id}`, {
       onError: (errors) => {
-        console.log(errors);
         notification.error({ title: Object.values(errors)[0] });
       },
     });
@@ -78,7 +77,7 @@ const Index: Page<Props> = ({ offices, success, error }) => {
           </Link>
           <Popconfirm
             title="Delete office"
-            description="Are you sure you want to delete this office?"
+            description="Are you sure you want to delete this office and its users?"
             okText="Yes"
             cancelText="No"
             onConfirm={() => handleDelete(record.id)}

@@ -35,7 +35,6 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        // Validate the incoming data (request with DI)
 
         // Save to database
         Users::create([
@@ -50,29 +49,19 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Users $users)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Users $user)
     {
         $offices = Offices::all();
-        $user = Users::findOrFail($id);
         return Inertia::render('Users/Edit', ['user' => $user, 'offices'=> $offices]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUserRequest $request, string $id)
+    public function update(StoreUserRequest $request, Users $user)
     {
-        $user = Users::findOrFail($id);
         $user->update([
             'nome'  => $request->nome,
             'cognome'  => $request->cognome,

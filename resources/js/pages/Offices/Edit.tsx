@@ -37,7 +37,6 @@ const Edit: Page<Props> = ({ office }) => {
 
 
   const handleSubmit = (values: any) => {
-    console.log(values)
 
     const formatted = {
       ...values,
@@ -50,7 +49,7 @@ const Edit: Page<Props> = ({ office }) => {
     router.put(`/offices/${office.id}`, formatted, {
       onError: (errors) => {
         notification.error({ title: Object.values(errors)[0] });
-        console.log(errors)},
+      },
     });
   };
 

@@ -16,7 +16,6 @@ const Create: Page = ({ }) => {
     const { Title } = Typography;
     
     const handleSubmit = (values: any) => {
-    console.log(values)
       
     const formatted = {
         ...values,
@@ -28,7 +27,6 @@ const Create: Page = ({ }) => {
 
     router.post('/offices', formatted, {
         onError: (errors) => {
-        console.log(errors);
         notification.error({ title: Object.values(errors)[0] });
         },
     });
