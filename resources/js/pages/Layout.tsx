@@ -1,4 +1,3 @@
-// Layout.tsx
 import React, { useEffect, useState } from 'react';
 import { router, usePage } from '@inertiajs/react';
 import { Layout as AntLayout, Menu } from 'antd';
@@ -23,7 +22,6 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       setCurrentSection('offices');
     }
   }, [url]);
-
 
   return (
     <AntLayout style={{ height: '100vh', overflow: 'hidden', overscrollBehavior: 'none' }}>
