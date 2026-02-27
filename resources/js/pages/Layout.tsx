@@ -26,9 +26,9 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 
   return (
-    <AntLayout style={{ minHeight: '100vh' }}>
+    <AntLayout style={{ height: '100vh', overflow: 'hidden', overscrollBehavior: 'none' }}>
       <Sider width={200} style={{ background: '#001529', color: '#fff' }}>
-        <div style={{ height: 64, margin: 16, color: '#fff', fontSize: 20 }}>
+        <div style={{ height: 64, margin: 16, color: '#fff', fontSize: 20, padding:10 }}>
           My App
         </div>
         <Menu
