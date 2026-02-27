@@ -8,6 +8,14 @@ type Page<P = {}> = React.FC<P> & {
   layout?: (page: React.ReactElement) => React.ReactNode;
 };
 
+interface PaginatedData<T> {
+  data: T[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}
+
 interface User {
   id: number;
   nome: string;
@@ -18,12 +26,19 @@ interface User {
 }
 
 interface Props {
-    users: User[];
+    users: PaginatedData<User>;
     success?: string;
     error?: string;
 }
 
 const Index: Page<Props> = ({ users, success, error }) => {
+
+  const handleTableChange = (pagination: any) => {
+    router.get('/offices', { page: pagination.current }, {
+      preserveState: true,
+      replace: true
+    });
+  };
 
   const handleDelete = (id: number) => {
     router.delete(`/users/${id}`, {
@@ -110,9 +125,15 @@ const Index: Page<Props> = ({ users, success, error }) => {
       </div>
 
       <Table
-        dataSource={users}
+        dataSource={users.data}
         columns={columns}
         rowKey="id"
+        pagination={{
+          current: users.current_page,
+          pageSize: users.per_page,
+          total: users.total,
+        }}
+        onChange={handleTableChange}
       />
     </div>
   );

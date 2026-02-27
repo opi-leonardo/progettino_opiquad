@@ -14,7 +14,7 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        $offices = Offices::all();
+        $offices = Offices::paginate(10);
         return Inertia::render('Offices/Index', [
             'offices' => $offices
         ]);

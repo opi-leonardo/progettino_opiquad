@@ -13,8 +13,16 @@ interface Office {
   fineOrarioUscita: string;
 }
 
+interface PaginatedData<T> {
+  data: T[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+}
+
 interface Props {
-  offices: Office[];
+  offices: PaginatedData<Office>;
   success?: string;
   error?: string;
 }
@@ -26,6 +34,13 @@ type Page<P = {}> = React.FC<P> & {
 const { Title } = Typography;
 
 const Index: Page<Props> = ({ offices, success, error }) => {
+
+  const handleTableChange = (pagination: any) => {
+    router.get('/offices', { page: pagination.current }, {
+      preserveState: true,
+      replace: true
+    });
+  };
 
   const handleDelete = (id: number) => {
     router.delete(`/offices/${id}`, {
@@ -106,9 +121,15 @@ const Index: Page<Props> = ({ offices, success, error }) => {
       </div>
 
       <Table
-        dataSource={offices}
+        dataSource={offices.data}
         columns={columns}
         rowKey="id"
+        pagination={{
+          current: offices.current_page,
+          pageSize: offices.per_page,
+          total: offices.total,
+        }}
+        onChange={handleTableChange}
       />
     </div>
   );
