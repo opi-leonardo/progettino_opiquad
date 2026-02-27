@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react';
 import { Table, Button, Space, Typography, Popconfirm, notification } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
+import { WarningFilled } from '@ant-design/icons';
 
 interface Office {
   id: number;
@@ -93,6 +94,7 @@ const Index: Page<Props> = ({ offices, success, error }) => {
           <Popconfirm
             title="Delete office"
             description="Are you sure you want to delete this office and its users?"
+            icon={<WarningFilled style={{ color: 'red' }}/>}
             okText="Yes"
             cancelText="No"
             onConfirm={() => handleDelete(record.id)}

@@ -100,6 +100,7 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="fineOrarioIngresso"
           label="Fine Ingresso"
+          dependencies={['inizioOrarioIngresso', 'night_shift']}
           rules={[{ required: true, message: 'Seleziona l’orario'  }, 
             ({ getFieldValue }) => ({
             validator: (_, value) => {
@@ -119,13 +120,14 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="inizioOrarioUscita"
           label="Inizio Uscita"
+          dependencies={['inizioOrarioIngresso', 'night_shift']}
           rules={[{ required: true, message: 'Seleziona l’orario'  },
             ({ getFieldValue }) => ({
             validator: (_, value) => {
               const start = getFieldValue('inizioOrarioIngresso');
               const isNight = getFieldValue('night_shift');
 
-              const isInvalid = !isNight && value && start && start.isAfter(value)
+              const isInvalid = !isNight && value && start && !start.isBefore(value)
 
               return isInvalid
               ? Promise.reject('Deve essere dopo l’inizio ingresso (o abilita Orario Notturno se va al giorno seguente)')
@@ -139,6 +141,7 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="fineOrarioUscita"
           label="Fine Uscita"
+          dependencies={['inizioOrarioUscita', 'night_shift']}
           rules={[{ required: true, message: 'Seleziona l’orario'  },
             ({ getFieldValue }) => ({
             validator: (_, value) => {
