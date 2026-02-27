@@ -25,7 +25,7 @@ class OfficeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Offices/Create');
+        return Inertia::render('Offices/Edit');
     }
 
     /**
@@ -33,17 +33,7 @@ class OfficeController extends Controller
      */
     public function store(StoreOfficeRequest $request)
     {
-        Offices::create([
-            'nome' => $request['nome'],
-            'cognome' => $request['cognome'],
-            'email' => $request['email'],
-            'giornoCorto' => $request['giornoCorto'],
-            'office_id' => $request['officeId'],
-            'inizioOrarioIngresso' => $request['inizioOrarioIngresso'],
-            'fineOrarioIngresso' => $request['fineOrarioIngresso'],
-            'inizioOrarioUscita' => $request['inizioOrarioUscita'],
-            'fineOrarioUscita' => $request['fineOrarioUscita'],
-        ]);
+        Offices::create($request->validated());
 
         return redirect()->route('offices.index')->with('success', 'Office created successfully!');
     }
@@ -61,13 +51,7 @@ class OfficeController extends Controller
      */
     public function update(StoreOfficeRequest $request, Offices $office)
     {
-        $office->update([
-            'nome'                  => $request->nome,
-            'inizioOrarioIngresso'  => $request->inizioOrarioIngresso,
-            'fineOrarioIngresso'    => $request->fineOrarioIngresso,
-            'inizioOrarioUscita'    => $request->inizioOrarioUscita,
-            'fineOrarioUscita'      => $request->fineOrarioUscita
-        ]);
+        $office->update($request->validated());
         return redirect()->route('offices.index')->with('success', 'Office edited successfully!');
     }
 

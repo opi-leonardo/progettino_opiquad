@@ -27,13 +27,13 @@ const Edit: Page<Props> = ({ office }) => {
 
   const { Title } = Typography; 
 
-  const initialValues = {
+  const initialValues = office ? {
     ...office,
     inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso, "HH:mm:ss") : null,
     fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, "HH:mm:ss") : null,
     inizioOrarioUscita: office.inizioOrarioUscita ? dayjs(office.inizioOrarioUscita, "HH:mm:ss") : null,
     fineOrarioUscita: office.fineOrarioUscita ? dayjs(office.fineOrarioUscita, "HH:mm:ss") : null,
-  };
+  } : undefined;
 
 
   const handleSubmit = (values: any) => {
@@ -46,17 +46,25 @@ const Edit: Page<Props> = ({ office }) => {
       fineOrarioUscita: values.fineOrarioUscita.format('HH:mm'),
     };
 
-    router.put(`/offices/${office.id}`, formatted, {
-      onError: (errors) => {
-        notification.error({ title: Object.values(errors)[0] });
-      },
-    });
+    if (office) {
+      router.put(`/offices/${office.id}`, formatted, {
+        onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
+        },
+      });
+    } else {
+      router.post('/offices', formatted, {
+          onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
+          },
+      });
+    }
   };
 
   return (
     <div style={{ padding: 40 }}>
       <Title level={2} style={{ margin: 0, marginBottom:'20px' }}>
-        Edit Office
+        {office ? 'Edit Office' : 'Create Office'}
       </Title>
       <Form
         initialValues={initialValues}

@@ -1,8 +1,7 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
-import { Form, Input, Button, TimePicker, Typography, Select, notification } from 'antd';
+import { Form, Input, Button, Typography, Select, notification } from 'antd';
 import Layout from '../Layout';
-import dayjs from 'dayjs';
 
 interface Office {
   id: number;
@@ -30,25 +29,39 @@ type Page<P = {}> = React.FC<P> & {
 
 const Edit: Page<Props> = ({ user, offices }) => {
 
-  const { Title } = Typography; 
-  
+  const { Title } = Typography;
+
+  console.log(user)
+  const initialValues = user ? {    
+    ...user, 
+    giornoCorto: Number(user.giornoCorto),
+    office_id: Number(user.office_id)
+  } : undefined;
 
   const handleSubmit = (values: any) => {
 
-    router.put(`/users/${user.id}`, values, {
-      onError: (errors) => {
-        notification.error({ title: Object.values(errors)[0] });
+    if (user) {
+      router.put(`/users/${user.id}`, values, {
+        onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
+          },
+      });
+    } else {
+      router.post('/users', values, {
+        onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
         },
-    });
+      });
+    }
   };
 
   return (
     <div style={{ padding: 40 }}>
       <Title level={2} style={{ margin: 0, marginBottom:'20px' }}>
-        Edit User
+        {user ? 'Edit User' : 'Create User'}
       </Title>
       <Form
-        initialValues={{    ...user, giornoCorto: Number(user.giornoCorto),officeId: Number(user.office_id),}}
+        initialValues={initialValues}
         onFinish={handleSubmit}
         style={{ maxWidth: 400 }}
       >
@@ -77,7 +90,7 @@ const Edit: Page<Props> = ({ user, offices }) => {
         </Form.Item>
 
         <Form.Item
-          name="officeId"
+          name="office_id"
           label="Office"
           rules={[{ required: true }]}
         >

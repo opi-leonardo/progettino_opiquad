@@ -31,7 +31,7 @@ class StoreUserRequest extends FormRequest
                 Rule::unique('users', 'email')->ignore($this->user),
             ],
             'giornoCorto' => 'nullable|integer|min:0|max:6',
-            'officeId' => 'required|exists:offices,id',
+            'office_id' => 'required|exists:offices,id',
         ];
     }
 }

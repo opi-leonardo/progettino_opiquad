@@ -27,7 +27,7 @@ class UserController extends Controller
     public function create()
     {
         $offices = Offices::all();
-        return Inertia::render('Users/Create', ['offices' => $offices]);
+        return Inertia::render('Users/Edit', ['offices' => $offices]);
     }
 
     /**
@@ -37,14 +37,7 @@ class UserController extends Controller
     {
 
         // Save to database
-        Users::create([
-            'nome' => $request->nome,
-            'cognome' => $request->cognome,
-            'email' => $request->email,
-            'giornoCorto' => $request->giornoCorto,
-            'office_id' => $request->officeId,
-
-        ]);        
+        Users::create($request->validated());        
         return redirect('/users')->with('success', 'User created successfully!');
     }
 
@@ -62,12 +55,7 @@ class UserController extends Controller
      */
     public function update(StoreUserRequest $request, Users $user)
     {
-        $user->update([
-            'nome'  => $request->nome,
-            'cognome'  => $request->cognome,
-            'email'   => $request->email,
-            'giornoCorto'   => $request->giornoCorto,
-        ]);
+        $user->update($request->validated());
         return redirect()->route('users.index')->with('success', 'User edited successfully!');
     }
 
