@@ -1,6 +1,6 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
-import { Form, Input, Button, TimePicker, Typography, notification } from 'antd';
+import { Form, Input, Button, TimePicker, Typography, notification, Checkbox } from 'antd';
 import Layout from '../Layout';
 import dayjs from 'dayjs';
 
@@ -11,6 +11,7 @@ interface Office {
   fineOrarioIngresso: string;
   inizioOrarioUscita: string;
   fineOrarioUscita: string;
+  night_shift: 0 | 1;
 }
 
 interface Props {
@@ -33,6 +34,7 @@ const Edit: Page<Props> = ({ office }) => {
     fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, "HH:mm:ss") : null,
     inizioOrarioUscita: office.inizioOrarioUscita ? dayjs(office.inizioOrarioUscita, "HH:mm:ss") : null,
     fineOrarioUscita: office.fineOrarioUscita ? dayjs(office.fineOrarioUscita, "HH:mm:ss") : null,
+    night_shift: office.night_shift === 1,
   } : undefined;
 
 
@@ -44,6 +46,7 @@ const Edit: Page<Props> = ({ office }) => {
       fineOrarioIngresso: values.fineOrarioIngresso.format('HH:mm'),
       inizioOrarioUscita: values.inizioOrarioUscita.format('HH:mm'),
       fineOrarioUscita: values.fineOrarioUscita.format('HH:mm'),
+      night_shift: values.night_shift ? 1 : 0,
     };
 
     if (office) {
@@ -70,9 +73,18 @@ const Edit: Page<Props> = ({ office }) => {
         initialValues={initialValues}
         onFinish={handleSubmit}
         labelAlign="left"
-        labelCol={{ span: 3 }}
-        wrapperCol={{ span: 21 }}
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 20 }}
       >
+
+        <Form.Item
+          name="night_shift"
+          label="Abilita Orario Notturno"
+          valuePropName="checked"
+        >
+          <Checkbox style={{ width: '100%' }} />
+        </Form.Item>
+
         <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -88,7 +100,18 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="fineOrarioIngresso"
           label="Fine Ingresso"
-          rules={[{ required: true, message: 'Seleziona l’orario'  }]}
+          rules={[{ required: true, message: 'Seleziona l’orario'  }, 
+            ({ getFieldValue }) => ({
+            validator: (_, value) => {
+              const start = getFieldValue('inizioOrarioIngresso');
+              const isNight = getFieldValue('night_shift');
+
+              const isInvalid = !isNight && value && start && value.isBefore(start)
+              return isInvalid 
+                ? Promise.reject('Deve essere dopo o uguale all’inizio ingresso (o abilita Orario Notturno se va al giorno seguente)')
+                : Promise.resolve();
+            }
+          })]}
         >
           <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
@@ -96,7 +119,19 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="inizioOrarioUscita"
           label="Inizio Uscita"
-          rules={[{ required: true, message: 'Seleziona l’orario'  }]}
+          rules={[{ required: true, message: 'Seleziona l’orario'  },
+            ({ getFieldValue }) => ({
+            validator: (_, value) => {
+              const start = getFieldValue('inizioOrarioIngresso');
+              const isNight = getFieldValue('night_shift');
+
+              const isInvalid = !isNight && value && start && start.isAfter(value)
+
+              return isInvalid
+              ? Promise.reject('Deve essere dopo l’inizio ingresso (o abilita Orario Notturno se va al giorno seguente)')
+              : Promise.resolve();
+            }
+          })]}
         >
           <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
@@ -104,7 +139,18 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="fineOrarioUscita"
           label="Fine Uscita"
-          rules={[{ required: true, message: 'Seleziona l’orario'  }]}
+          rules={[{ required: true, message: 'Seleziona l’orario'  },
+            ({ getFieldValue }) => ({
+            validator: (_, value) => {
+              const start = getFieldValue('inizioOrarioUscita');
+              const isNight = getFieldValue('night_shift');
+
+              const isInvalid = !isNight && value && start && value.isBefore(start)
+              return isInvalid 
+                ? Promise.reject('Deve essere dopo o uguale all’inizio uscita (o abilita Orario Notturno se va al giorno seguente)')
+                : Promise.resolve();
+            }
+          })]}
         >
           <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>

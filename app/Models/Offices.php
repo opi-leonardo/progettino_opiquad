@@ -12,6 +12,7 @@ class Offices extends Model
         'fineOrarioIngresso',
         'inizioOrarioUscita',
         'fineOrarioUscita',
+        'night_shift'
 
     ];
 

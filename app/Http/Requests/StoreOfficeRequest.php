@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+
 
 class StoreOfficeRequest extends FormRequest
 {
@@ -22,6 +24,7 @@ class StoreOfficeRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'night_shift' => ['required', 'boolean'],
             'nome' => ['required', 'string', 'max:255'],
             'inizioOrarioIngresso' => [
                 'required',
@@ -30,14 +33,26 @@ class StoreOfficeRequest extends FormRequest
             'fineOrarioIngresso' => [
                 'required',
                 'date_format:H:i',
+                Rule::when(
+                    $this->night_shift == 0,
+                    ['after_or_equal:inizioOrarioIngresso']
+                ),               
             ],
             'inizioOrarioUscita' => [
                 'required',
                 'date_format:H:i',
+                Rule::when(
+                    $this->night_shift == 0,
+                    ['after:inizioOrarioIngresso']
+                ),
             ],
             'fineOrarioUscita' => [
                 'required',
                 'date_format:H:i',
+                Rule::when(
+                    $this->night_shift == 0,
+                    ['after_or_equal:inizioOrarioUscita']
+                ),
             ],
         ];
     }
