@@ -10,8 +10,6 @@ interface Office {
   nome: string;
   inizioOrarioIngresso: string;
   fineOrarioIngresso: string;
-  inizioOrarioUscita: string;
-  fineOrarioUscita: string;
 }
 
 interface PaginatedData<T> {
@@ -72,16 +70,6 @@ const Index: Page<Props> = ({ offices, success, error }) => {
       title: 'Fine Ingresso',
       dataIndex: 'fineOrarioIngresso',
       key: 'fineOrarioIngresso',
-    },
-    {
-      title: 'Inizio Uscita',
-      dataIndex: 'inizioOrarioUscita',
-      key: 'inizioOrarioUscita',
-    },
-    {
-      title: 'Fine Uscita',
-      dataIndex: 'fineOrarioUscita',
-      key: 'fineOrarioUscita',
     },
     {
       title: 'Actions',

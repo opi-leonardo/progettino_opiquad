@@ -38,22 +38,6 @@ class StoreOfficeRequest extends FormRequest
                     ['after_or_equal:inizioOrarioIngresso']
                 ),               
             ],
-            'inizioOrarioUscita' => [
-                'required',
-                'date_format:H:i',
-                Rule::when(
-                    $this->night_shift == 0,
-                    ['after:inizioOrarioIngresso']
-                ),
-            ],
-            'fineOrarioUscita' => [
-                'required',
-                'date_format:H:i',
-                Rule::when(
-                    $this->night_shift == 0,
-                    ['after_or_equal:inizioOrarioUscita']
-                ),
-            ],
         ];
     }
 }

@@ -14,6 +14,7 @@ interface PaginatedData<T> {
   last_page: number;
   per_page: number;
   total: number;
+  workingHours: string;
 }
 
 interface User {

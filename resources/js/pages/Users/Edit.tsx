@@ -14,6 +14,7 @@ interface User {
   cognome: string;
   email: string;
   giornoCorto: string;
+  workingHours: string;
   office_id?: string;
   offices?: { id: number; name: string } | null;
 }

@@ -17,7 +17,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   },[]);
 
   return (
-    <AntLayout style={{ height: '100vh', overflow: 'hidden', overscrollBehavior: 'none' }}>
+    <AntLayout style={{ height: '100vh', overflow: 'hidden' }}>
       <Sider width={200} style={{ background: '#001529', color: '#fff' }}>
         <div style={{ height: 64, margin: 16, color: '#fff', fontSize: 20, padding:10 }}>
           My App
