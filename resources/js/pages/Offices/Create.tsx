@@ -1,7 +1,7 @@
 import React, { useState, FormEvent } from 'react';
 import { router } from '@inertiajs/react';
 
-import { Button, Input, Form, Select, TimePicker} from 'antd';
+import { Button, Input, Form, Select, TimePicker, Typography, notification} from 'antd';
 import Layout from '../Layout';
 
 
@@ -13,17 +13,11 @@ const Create: Page = ({ }) => {
   const [nome, setName] = useState<string>('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-
-    const layout = {
-        labelCol: { span: 8 },
-        wrapperCol: { span: 16 },
-    };
-
-    const App = () => {
-        const [form] = Form.useForm();
-    };
-
+    const { Title } = Typography;
+    
     const handleSubmit = (values: any) => {
+    console.log(values)
+      
     const formatted = {
         ...values,
         inizioOrarioIngresso: values.inizioOrarioIngresso.format('HH:mm'),
@@ -35,25 +29,19 @@ const Create: Page = ({ }) => {
     router.post('/offices', formatted, {
         onError: (errors) => {
         console.log(errors);
+        notification.error({ title: Object.values(errors)[0] });
         },
     });
   };
 
   return (
-    <div style={{     
-      height: '100vh',
-      width: '100vh',
-      display: 'flex',
-      padding: 70,
-      flexDirection: 'column',
-      }}>
+    <div style={{ padding: 40 }}>
 
-      <h1>
+      <Title level={2} style={{ margin: 0 , marginBottom: '20px'}}>
         Create Office
-      </h1>
+      </Title>
 
       <Form
-        {...layout}
         onFinish={handleSubmit}
         style={{ maxWidth: 400 }}
       >
@@ -61,16 +49,14 @@ const Create: Page = ({ }) => {
       <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
         <Input 
           type='text' 
-          value={nome}
-          onChange={e => setName(e.target.value)}
           required
         />
       </Form.Item>
 
       <Form.Item
-          name="inizioOrarioIngresso"
-          label="Inizio Orario Ingresso"
-          rules={[{ required: true, message: 'Seleziona l’orario' }]}
+        name="inizioOrarioIngresso"
+        label="Inizio Orario Ingresso"
+        rules={[{ required: true, message: 'Seleziona l’orario' }]}
       >
         <TimePicker format="HH:mm" />
       </Form.Item>
@@ -78,8 +64,7 @@ const Create: Page = ({ }) => {
       <Form.Item
           name="fineOrarioIngresso"
           label="Fine Orario Ingresso"
-          rules={[{ required: true, message: 'Seleziona l’orario' }]}
-          >
+          rules={[ { required: true, message: 'Seleziona l’orario' }]}>
           <TimePicker format="HH:mm" />
       </Form.Item>
 
@@ -94,14 +79,14 @@ const Create: Page = ({ }) => {
       <Form.Item
           name="fineOrarioUscita"
           label="Fine Orario Uscita"
-          rules={[{ required: true, message: 'Seleziona l’orario' }]}
-          >
+          rules={[{ required: true, message: 'Seleziona l’orario' }
+        ]}>
           <TimePicker format="HH:mm" />
       </Form.Item>
 
       <Form.Item>
           <Button type="primary" htmlType="submit">
-          Submit
+            Submit
           </Button>
       </Form.Item>
     </Form>

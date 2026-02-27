@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { router } from '@inertiajs/react';
-import { Table, Button, Space, Typography } from 'antd';
+import { Table, Button, Space, Typography, Popconfirm, notification } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
 
@@ -15,6 +15,8 @@ interface Office {
 
 interface Props {
   offices: Office[];
+  success?: string;
+  error?: string;
 }
 
 type Page<P = {}> = React.FC<P> & {
@@ -23,7 +25,23 @@ type Page<P = {}> = React.FC<P> & {
 
 const { Title } = Typography;
 
-const Index: Page<Props> = ({ offices }) => {
+const Index: Page<Props> = ({ offices, success, error }) => {
+
+  const handleDelete = (id: number) => {
+    router.delete(`/offices/${id}`, {
+      onError: (errors) => {
+        console.log(errors);
+        notification.error({ title: Object.values(errors)[0] });
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (success) {
+      notification.success({ title: success });
+    }
+  }, [success]);
+
   const columns = [
     {
       title: 'Nome',
@@ -58,9 +76,17 @@ const Index: Page<Props> = ({ offices }) => {
           <Link href={`/offices/${record.id}/edit`}>
             <Button type="link">Edit</Button>
           </Link>
-          <Link href={`/offices/delete`}> 
-            <Button type="link">Delete</Button>
-          </Link>
+          <Popconfirm
+            title="Delete office"
+            description="Are you sure you want to delete this office?"
+            okText="Yes"
+            cancelText="No"
+            onConfirm={() => handleDelete(record.id)}
+          >
+            <Button type="link" danger>
+              Delete
+            </Button>
+          </Popconfirm>
         </>
       ),
     },

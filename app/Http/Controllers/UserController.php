@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $users = Users::with('office')->get();
         return Inertia::render('Users/Index', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -26,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $offices = Offices::select('id', 'nome')->get();
+        $offices = Offices::all();
         return Inertia::render('Users/Create', ['offices' => $offices]);
     }
 
@@ -45,7 +45,7 @@ class UserController extends Controller
             'giornoCorto' => $request->giornoCorto,
             'office_id' => $request->officeId,
 
-        ]);
+        ]);        
         return redirect('/users')->with('success', 'User created successfully!');
     }
 
@@ -60,24 +60,35 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Users $users)
+    public function edit(string $id)
     {
-        //
+        $offices = Offices::all();
+        $user = Users::findOrFail($id);
+        return Inertia::render('Users/Edit', ['user' => $user, 'offices'=> $offices]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Users $users)
+    public function update(StoreUserRequest $request, string $id)
     {
-        //
+        $user = Users::findOrFail($id);
+        $user->update([
+            'nome'  => $request->nome,
+            'cognome'  => $request->cognome,
+            'email'   => $request->email,
+            'giornoCorto'   => $request->giornoCorto,
+        ]);
+        return redirect()->route('users.index')->with('success', 'User edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Users $users)
+    public function destroy(Users $user)
     {
-        //
+        $user->delete();
+
+        return back()->with('success', 'Deleted successfully');
     }
 }

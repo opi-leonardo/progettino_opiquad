@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Offices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\StoreOfficeRequest;
 
 class OfficeController extends Controller
 {
@@ -30,7 +31,7 @@ class OfficeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOfficeRequest $request)
     {
         Offices::create([
             'nome' => $request['nome'],
@@ -44,7 +45,7 @@ class OfficeController extends Controller
             'fineOrarioUscita' => $request['fineOrarioUscita'],
         ]);
 
-        return redirect()->route('offices.index');
+        return redirect()->route('offices.index')->with('success', 'Office created successfully!');
     }
 
     /**
@@ -67,7 +68,7 @@ class OfficeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreOfficeRequest $request, string $id)
     {
         $office = Offices::findOrFail($id);
         $office->update([
@@ -77,14 +78,16 @@ class OfficeController extends Controller
             'inizioOrarioUscita'    => $request->inizioOrarioUscita,
             'fineOrarioUscita'      => $request->fineOrarioUscita
         ]);
-        return redirect()->route('offices.index');
+        return redirect()->route('offices.index')->with('success', 'Office edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offices $office)
     {
-        //
+        $office->delete();
+
+        return back()->with('success', 'Deleted successfully');
     }
 }

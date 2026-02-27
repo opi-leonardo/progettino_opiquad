@@ -1,13 +1,13 @@
 import React, { useState, FormEvent } from 'react';
 import { router } from '@inertiajs/react';
 
-import { Button, Input, Form, Select } from 'antd';
+import { Button, Input, Form, Select, Typography, notification } from 'antd';
 import Layout from '../Layout';
 
 
 interface Office {
   id: number;
-  name: string;
+  nome: string;
 }
 
 interface Props {
@@ -24,6 +24,7 @@ const Create: Page<Props> = ({ offices }) => {
   const [email, setEmail] = useState<string>('');
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+    const { Title } = Typography;
 
   const layout = {
     labelCol: { span: 8 },
@@ -36,8 +37,12 @@ const Create: Page<Props> = ({ offices }) => {
 
   const handleSubmit = (values: any) => {
     router.post('/users', values, {
+      onSuccess:(message) => {
+        console.log(message);
+      },
       onError: (errors) => {
         console.log(errors);
+        notification.error({ title: Object.values(errors)[0] });
       },
     });
   };
@@ -51,9 +56,9 @@ const Create: Page<Props> = ({ offices }) => {
       flexDirection: 'column',
       }}>
 
-      <h1>
+      <Title level={2} style={{ margin: 0 , marginBottom: '20px'}}>
         Create User
-      </h1>
+      </Title>
 
       <Form
         {...layout}
@@ -62,12 +67,12 @@ const Create: Page<Props> = ({ offices }) => {
       >
 
       <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
-      <Input 
-        type='text' 
-        value={nome}
-        onChange={e => setName(e.target.value)}
-        required
-      />
+        <Input 
+          type='text' 
+          value={nome}
+          onChange={e => setName(e.target.value)}
+          required
+        />
       </Form.Item>
 
       <Form.Item name="cognome" label="Cognome" rules={[{ required: true }]}>
@@ -112,7 +117,7 @@ const Create: Page<Props> = ({ offices }) => {
           <Select placeholder="Select an office">
             {offices.map((office) => (
               <Select.Option key={office.id} value={office.id}>
-                {office.name}
+                {office.id}: {office.nome}
               </Select.Option>
             ))}
           </Select>
