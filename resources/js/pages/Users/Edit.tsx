@@ -63,7 +63,9 @@ const Edit: Page<Props> = ({ user, offices }) => {
       <Form
         initialValues={initialValues}
         onFinish={handleSubmit}
-        style={{ maxWidth: 400 }}
+        labelAlign="left"
+        labelCol={{ span: 3 }}
+        wrapperCol={{ span: 21 }}
       >
         <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
           <Input />

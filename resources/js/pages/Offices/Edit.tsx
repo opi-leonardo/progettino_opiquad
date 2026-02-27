@@ -69,7 +69,9 @@ const Edit: Page<Props> = ({ office }) => {
       <Form
         initialValues={initialValues}
         onFinish={handleSubmit}
-        style={{ maxWidth: 400 }}
+        labelAlign="left"
+        labelCol={{ span: 3 }}
+        wrapperCol={{ span: 21 }}
       >
         <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
           <Input />
@@ -80,7 +82,7 @@ const Edit: Page<Props> = ({ office }) => {
           label="Inizio Ingresso"
           rules={[{ required: true, message: 'Seleziona l’orario'  }]}
         >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item
@@ -88,7 +90,7 @@ const Edit: Page<Props> = ({ office }) => {
           label="Fine Ingresso"
           rules={[{ required: true, message: 'Seleziona l’orario'  }]}
         >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item
@@ -96,7 +98,7 @@ const Edit: Page<Props> = ({ office }) => {
           label="Inizio Uscita"
           rules={[{ required: true, message: 'Seleziona l’orario'  }]}
         >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item
@@ -104,7 +106,7 @@ const Edit: Page<Props> = ({ office }) => {
           label="Fine Uscita"
           rules={[{ required: true, message: 'Seleziona l’orario'  }]}
         >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item>
