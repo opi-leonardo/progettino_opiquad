@@ -9,20 +9,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentSection, setCurrentSection] = useState<string>('users');
   const { url } = usePage();
 
-  //TODO: qui
   useEffect(() => {
-    if (url === '/') {
+    if (url === '/')
       router.visit('/users', { replace: true });
-    }
-  },[]); 
-
-  useEffect(() => {
-    if (url.startsWith('/users')) {
-      setCurrentSection('users');
-    } else if (url.startsWith('/offices')) {
+    if (url.startsWith('/offices')) 
       setCurrentSection('offices');
-    }
-  }, [url]);
+  },[]);
 
   return (
     <AntLayout style={{ height: '100vh', overflow: 'hidden', overscrollBehavior: 'none' }}>
@@ -39,12 +31,12 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
             {
               key: 'users',
               label: 'Users',
-              onClick: () => router.get('/users'),
+              onClick: () => {router.get('/users'); setCurrentSection('users')},
             },
             {
               key: 'offices',
               label: 'Offices',
-              onClick: () => router.get('/offices'),
+              onClick: () => {router.get('/offices'); setCurrentSection('offices')},
             },
           ]}
         />
