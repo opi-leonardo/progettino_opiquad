@@ -38,8 +38,9 @@ const Edit: Page<Props> = ({ office }) => {
 
     const formatted = {
     ...values,
-    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso) : null,
-    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso) : null,    night_shift: values.night_shift ? 1 : 0,
+    inizioOrarioIngresso: values.inizioOrarioIngresso ? values.inizioOrarioIngresso.format('YYYY-MM-DD HH:mm:ss') : null,
+    fineOrarioIngresso: values.fineOrarioIngresso ? values.fineOrarioIngresso.format('YYYY-MM-DD HH:mm:ss') : null,    
+    night_shift: values.night_shift ? 1 : 0,
   };
 
     if (office) {
