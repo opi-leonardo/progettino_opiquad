@@ -80,16 +80,17 @@ const Edit: Page<Props> = ({ user, offices }) => {
           <Input type={'email'}/>
         </Form.Item>
 
-        <Form.Item name="giornoCorto" label="Giorno" rules={[{ required: true, message: 'Seleziona un giorno' }]}>
+        <Form.Item name="giornoCorto" label="Giorno">
           <Select placeholder="Seleziona un giorno">
-          <Select.Option value={0}>Lunedì</Select.Option>
-          <Select.Option value={1}>Martedì</Select.Option>
-          <Select.Option value={2}>Mercoledì</Select.Option>
-          <Select.Option value={3}>Giovedì</Select.Option>
-          <Select.Option value={4}>Venerdì</Select.Option>
-          <Select.Option value={5}>Sabato</Select.Option>
-          <Select.Option value={6}>Domenica</Select.Option>
-        </Select>
+            <Select.Option value={null}>Nessun giorno</Select.Option>
+            <Select.Option value={0}>Lunedì</Select.Option>
+            <Select.Option value={1}>Martedì</Select.Option>
+            <Select.Option value={2}>Mercoledì</Select.Option>
+            <Select.Option value={3}>Giovedì</Select.Option>
+            <Select.Option value={4}>Venerdì</Select.Option>
+            <Select.Option value={5}>Sabato</Select.Option>
+            <Select.Option value={6}>Domenica</Select.Option>
+          </Select>
         </Form.Item>
 
         <Form.Item
