@@ -28,11 +28,11 @@ class StoreOfficeRequest extends FormRequest
             'nome' => ['required', 'string', 'max:255'],
             'inizioOrarioIngresso' => [
                 'required',
-                'date_format:H:i',
+                'date',
             ],
             'fineOrarioIngresso' => [
                 'required',
-                'date_format:H:i',
+                'date',
                 Rule::when(
                     $this->night_shift == 0,
                     ['after_or_equal:inizioOrarioIngresso']

@@ -37,11 +37,11 @@ const Edit: Page<Props> = ({ office }) => {
   const handleSubmit = (values: any) => {
 
     const formatted = {
-      ...values,
-      inizioOrarioIngresso: values.inizioOrarioIngresso.format('HH:mm'),
-      fineOrarioIngresso: values.fineOrarioIngresso.format('HH:mm'),
-      night_shift: values.night_shift ? 1 : 0,
-    };
+    ...values,
+    inizioOrarioIngresso: values.inizioOrarioIngresso ? values.inizioOrarioIngresso.format('YYYY-MM-DD HH:mm:ss') : null,
+    fineOrarioIngresso: values.fineOrarioIngresso ? values.fineOrarioIngresso.format('YYYY-MM-DD HH:mm:ss') : null,    
+    night_shift: values.night_shift ? 1 : 0,
+  };
 
     if (office) {
       router.put(`/offices/${office.id}`, formatted, {
