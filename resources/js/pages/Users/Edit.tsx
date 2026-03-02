@@ -1,6 +1,6 @@
 import React from 'react';
-import { router } from '@inertiajs/react';
-import { Form, Input, Button, Typography, Select, notification } from 'antd';
+import { Link, router } from '@inertiajs/react';
+import { Form, Input, Button, Typography, Select, notification, Alert } from 'antd';
 import Layout from '../Layout';
 
 interface Office {
@@ -61,6 +61,23 @@ const Edit: Page<Props> = ({ user, offices }) => {
       <Title level={2} style={{ margin: 0, marginBottom:'20px' }}>
         {user ? 'Edit User' : 'Create User'}
       </Title>
+
+  {offices.length === 0 && (
+        <Alert
+          description={
+            <span>
+              Nessun ufficio trovato. Devi creare almeno un ufficio prima di poter salvare un utente.{' '}
+              <Link href="/offices/create" style={{ fontWeight: 'bold' }}>
+                Clicca qui per crearne uno.
+              </Link>
+            </span>
+          }
+          type="warning"
+          showIcon
+          style={{ marginBottom: '20px' }}
+        />
+      )}
+
       <Form
         initialValues={initialValues}
         onFinish={handleSubmit}
