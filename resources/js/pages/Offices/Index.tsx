@@ -4,6 +4,7 @@ import { Table, Button, Space, Typography, Popconfirm, notification } from 'antd
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
 import { WarningFilled } from '@ant-design/icons';
+import dayjs from 'dayjs';
 
 interface Office {
   id: number;
@@ -65,11 +66,13 @@ const Index: Page<Props> = ({ offices, success, error }) => {
       title: 'Inizio Ingresso',
       dataIndex: 'inizioOrarioIngresso',
       key: 'inizioOrarioIngresso',
+      render: (value: string) => value ? dayjs(value).format('HH:mm') : '-',
     },
     {
       title: 'Fine Ingresso',
       dataIndex: 'fineOrarioIngresso',
       key: 'fineOrarioIngresso',
+      render: (value: string) => value ? dayjs(value).format('HH:mm') : '-',
     },
     {
       title: 'Actions',
