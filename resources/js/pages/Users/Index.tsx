@@ -74,13 +74,18 @@ const Index: Page<Props> = ({ users, success, error }) => {
       key: 'email',
     },
     {
-      title: 'Giorno',
+      title: 'Giorno Corto',
       dataIndex: 'giornoCorto',
       key: 'giornoCorto',
       render: (day: number) => {
         const giorni = ['Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato','Domenica'];
-        return giorni[day] ?? '';
-      }
+        return giorni[day] ?? '--';
+      },
+    },
+    {
+      title: 'Ore Lavorative',
+      dataIndex: 'oreDiLavoro',
+      key: 'oreDiLavoro',
     },
     {
       title: 'Office',
