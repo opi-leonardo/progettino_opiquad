@@ -98,7 +98,7 @@ const Edit: Page<Props> = ({ user, offices }) => {
         </Form.Item>
 
         <Form.Item name="oreDiLavoro" label="Ore di Lavoro" rules={[{ required: true }]}>
-          <Input type={'number'} min="0.01" max="24.00"/>
+          <Input type={'number'} min="0,01" max="24,00"/>
         </Form.Item>
 
         <Form.Item name="giornoCorto" label="Giorno">
