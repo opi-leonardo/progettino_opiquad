@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('cognome');
-            $table->string('email');
+            $table->string('email')->unique();
             $table->string('giornoCorto');
             $table->timestamps();
             $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
