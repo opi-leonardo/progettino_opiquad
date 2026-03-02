@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('offices', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->time('inizioOrarioIngresso');
-            $table->time('fineOrarioIngresso');
-            $table->time('inizioOrarioUscita');
-            $table->time('fineOrarioUscita');
+            $table->timestamp('inizioOrarioIngresso');
+            $table->timestamp('fineOrarioIngresso');
+            $table->timestamp('inizioOrarioUscita');
+            $table->timestamp('fineOrarioUscita');
             $table->timestamps();
         });
     }
