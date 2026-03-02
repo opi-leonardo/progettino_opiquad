@@ -16,10 +16,13 @@ return new class extends Migration
             $table->string('nome');
             $table->string('cognome');
             $table->string('email')->unique();
-            $table->string('giornoCorto');
+            $table->string('giornoCorto')
+                ->nullable();
+            $table->foreignId('office_id')
+                ->constrained('offices')
+                ->cascadeOnDelete();;
             $table->timestamps();
-            $table->foreignId('office_id')->constrained('offices')->onDelete('cascade');
-        });
+            });
     }
 
     /**
