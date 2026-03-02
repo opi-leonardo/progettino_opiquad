@@ -11,6 +11,7 @@ class Users extends Model
         'cognome',
         'email',
         'giornoCorto',
+        'oreDiLavoro',
         'office_id',
         'workingHours'
     ];

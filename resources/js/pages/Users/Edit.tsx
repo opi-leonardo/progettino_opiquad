@@ -97,6 +97,10 @@ const Edit: Page<Props> = ({ user, offices }) => {
           <Input type={'email'}/>
         </Form.Item>
 
+        <Form.Item name="oreDiLavoro" label="Ore di Lavoro" rules={[{ required: true }]}>
+          <Input type={'number'}/>
+        </Form.Item>
+
         <Form.Item name="giornoCorto" label="Giorno">
           <Select placeholder="Seleziona un giorno">
             <Select.Option value={null}>Nessun giorno</Select.Option>
@@ -112,10 +116,10 @@ const Edit: Page<Props> = ({ user, offices }) => {
 
         <Form.Item
           name="office_id"
-          label="Office"
+          label="Ufficio"
           rules={[{ required: true }]}
         >
-          <Select placeholder="Select an office">
+          <Select placeholder="Seleziona un ufficio">
             {offices.map((office) => (
               <Select.Option key={office.id} value={office.id}>
                 {office.id}: {office.nome}

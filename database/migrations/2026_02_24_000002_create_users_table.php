@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('giornoCorto')
                 ->nullable();
-            $table->decimal('oreDiLavoto');
+            $table->decimal('oreDiLavoro')->default(8);
             $table->foreignId('office_id')
                 ->constrained('offices')
                 ->cascadeOnDelete();;

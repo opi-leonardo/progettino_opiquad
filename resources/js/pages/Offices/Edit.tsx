@@ -28,8 +28,8 @@ const Edit: Page<Props> = ({ office }) => {
 
   const initialValues = office ? {
     ...office,
-    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso) : null,
-    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso) : null,
+    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso, "HH:mm:ss") : null,
+    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, "HH:mm:ss") : null,
     night_shift: office.night_shift === 1,
   } : undefined;
 
@@ -37,10 +37,11 @@ const Edit: Page<Props> = ({ office }) => {
   const handleSubmit = (values: any) => {
 
     const formatted = {
-    ...values,
-    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso) : null,
-    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso) : null,    night_shift: values.night_shift ? 1 : 0,
-  };
+      ...values,
+      inizioOrarioIngresso: values.inizioOrarioIngresso.format('HH:mm'),
+      fineOrarioIngresso: values.fineOrarioIngresso.format('HH:mm'),
+      night_shift: values.night_shift ? 1 : 0,
+    };
 
     if (office) {
       router.put(`/offices/${office.id}`, formatted, {
