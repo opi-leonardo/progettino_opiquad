@@ -5,7 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends FormRequest
+
+class StoreOfficeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,15 +24,20 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nome' => 'required|string|max:255',
-            'cognome' => 'required|string|max:255',
-            'email' => [
+            'night_shift' => ['required', 'boolean'],
+            'nome' => ['required', 'string', 'max:255'],
+            'inizioOrarioIngresso' => [
                 'required',
-                'email',
-                Rule::unique('users', 'email')->ignore($this->user),
+                'date_format:H:i',
             ],
-            'giornoCorto' => 'nullable|integer|min:0|max:6',
-            'office_id' => 'required|exists:offices,id',
+            'fineOrarioIngresso' => [
+                'required',
+                'date_format:H:i',
+                Rule::when(
+                    $this->night_shift == 0,
+                    ['after_or_equal:inizioOrarioIngresso']
+                ),               
+            ],
         ];
     }
 }

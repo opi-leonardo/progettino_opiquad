@@ -1,4 +1,3 @@
-// Layout.tsx
 import React from 'react';
 import { Link, usePage } from '@inertiajs/react';
 import { Layout as AntLayout, Menu } from 'antd';
@@ -6,7 +5,7 @@ import Sider from 'antd/es/layout/Sider';
 import { Content } from 'antd/es/layout/layout';
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { url } = usePage(); // current route
+  const { url } = usePage(); 
 
   return (
     <AntLayout style={{ minHeight: '100vh' }}>

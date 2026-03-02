@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Offices;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\StoreOfficeRequest;
 
 class OfficeController extends Controller
 {
@@ -13,7 +14,7 @@ class OfficeController extends Controller
      */
     public function index()
     {
-        $offices = Offices::all();
+        $offices = Offices::paginate(10);
         return Inertia::render('Offices/Index', [
             'offices' => $offices
         ]);
@@ -24,69 +25,43 @@ class OfficeController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Offices/Create');
+        return Inertia::render('Offices/Edit');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOfficeRequest $request)
     {
-        Offices::create([
-            'nome' => $request['nome'],
-            'cognome' => $request['cognome'],
-            'email' => $request['email'],
-            'giornoCorto' => $request['giornoCorto'],
-            'office_id' => $request['officeId'],
-            'inizioOrarioIngresso' => $request['inizioOrarioIngresso'],
-            'fineOrarioIngresso' => $request['fineOrarioIngresso'],
-            'inizioOrarioUscita' => $request['inizioOrarioUscita'],
-            'fineOrarioUscita' => $request['fineOrarioUscita'],
-        ]);
+        Offices::create($request->validated());
 
-        return redirect()->route('offices.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return redirect()->route('offices.index')->with('success', 'Office created successfully!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Offices $office)
     {
-        $office = Offices::findOrFail($id);
         return Inertia::render('Offices/Edit', ['office' => $office]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreOfficeRequest $request, Offices $office)
     {
-        $office = Offices::findOrFail($id);
-        $office->update([
-            'nome'                  => $request->nome,
-            'inizioOrarioIngresso'  => $request->inizioOrarioIngresso,
-            'fineOrarioIngresso'    => $request->fineOrarioIngresso,
-            'inizioOrarioUscita'    => $request->inizioOrarioUscita,
-            'fineOrarioUscita'      => $request->fineOrarioUscita
-        ]);
-        return redirect()->route('offices.index');
+        $office->update($request->validated());
+        return redirect()->route('offices.index')->with('success', 'Office edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Offices $office)
     {
-        $office = Offices::findOrFail($id);
         $office->delete();
-        return redirect()->route('offices.index');
+
+        return back()->with('success', 'Deleted successfully');
     }
 }

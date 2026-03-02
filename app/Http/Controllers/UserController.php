@@ -15,9 +15,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = Users::with('office')->get();
+        $users = Users::with('office')->paginate(10);
         return Inertia::render('Users/Index', [
-            'users' => $users
+            'users' => $users,
         ]);
     }
 
@@ -26,8 +26,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        $offices = Offices::select('id', 'nome')->get();
-        return Inertia::render('Users/Create', ['offices' => $offices]);
+        $offices = Offices::all();
+        return Inertia::render('Users/Edit', ['offices' => $offices]);
     }
 
     /**
@@ -35,49 +35,37 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        // Validate the incoming data (request with DI)
 
         // Save to database
-        Users::create([
-            'nome' => $request->nome,
-            'cognome' => $request->cognome,
-            'email' => $request->email,
-            'giornoCorto' => $request->giornoCorto,
-            'office_id' => $request->officeId,
-
-        ]);
+        Users::create($request->validated());        
         return redirect('/users')->with('success', 'User created successfully!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Users $users)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Users $users)
+    public function edit(Users $user)
     {
-        //
+        $offices = Offices::all();
+        return Inertia::render('Users/Edit', ['user' => $user, 'offices'=> $offices]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Users $users)
+    public function update(StoreUserRequest $request, Users $user)
     {
-        //
+        $user->update($request->validated());
+        return redirect()->route('users.index')->with('success', 'User edited successfully!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Users $users)
+    public function destroy(Users $user)
     {
-        //
+        $user->delete();
+
+        return back()->with('success', 'Deleted successfully');
     }
 }

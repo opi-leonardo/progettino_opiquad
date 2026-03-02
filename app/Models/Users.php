@@ -11,7 +11,8 @@ class Users extends Model
         'cognome',
         'email',
         'giornoCorto',
-        'office_id'
+        'office_id',
+        'workingHours'
     ];
 
     public function office()

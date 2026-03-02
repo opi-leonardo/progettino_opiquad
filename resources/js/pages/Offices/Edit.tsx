@@ -1,6 +1,6 @@
 import React from 'react';
 import { router } from '@inertiajs/react';
-import { Form, Input, Button, TimePicker } from 'antd';
+import { Form, Input, Button, TimePicker, Typography, notification, Checkbox } from 'antd';
 import Layout from '../Layout';
 import dayjs from 'dayjs';
 
@@ -9,8 +9,7 @@ interface Office {
   nome: string;
   inizioOrarioIngresso: string;
   fineOrarioIngresso: string;
-  inizioOrarioUscita: string;
-  fineOrarioUscita: string;
+  night_shift: 0 | 1;
 }
 
 interface Props {
@@ -21,47 +20,65 @@ type Page<P = {}> = React.FC<P> & {
   layout?: (page: React.ReactElement) => React.ReactNode;
 };
 
-const FORMAT = 'HH:mm';
-
-// Converte stringa "08:30" in dayjs sicuro
-const StringToTime = (val: any) => {
-  if (!val) return null;
-  if (dayjs.isDayjs(val)) return val;
-  const parsed = dayjs(`1970-01-01T${val}`);
-  return parsed.isValid() ? parsed : null;
-};
+const FORMAT = "HH:mm";
 
 const Edit: Page<Props> = ({ office }) => {
 
+  const { Title } = Typography; 
+
+  const initialValues = office ? {
+    ...office,
+    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso, "HH:mm:ss") : null,
+    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, "HH:mm:ss") : null,
+    night_shift: office.night_shift === 1,
+  } : undefined;
+
+
   const handleSubmit = (values: any) => {
 
-    const TimeToString = (val: any) => {
-        if (!val) return null;
-        if (dayjs.isDayjs(val)) return val.format(FORMAT);
-        return val;
+    const formatted = {
+      ...values,
+      inizioOrarioIngresso: values.inizioOrarioIngresso.format('HH:mm'),
+      fineOrarioIngresso: values.fineOrarioIngresso.format('HH:mm'),
+      night_shift: values.night_shift ? 1 : 0,
     };
 
-    const payload = {
-        nome:                 values.nome,
-        inizioOrarioIngresso: TimeToString(values.inizioOrarioIngresso),
-        fineOrarioIngresso:   TimeToString(values.fineOrarioIngresso),
-        inizioOrarioUscita:   TimeToString(values.inizioOrarioUscita),
-        fineOrarioUscita:     TimeToString(values.fineOrarioUscita),
-    };
-
-    router.put(`/offices/${office.id}`, payload, {
-      onError: (errors) => console.log(errors),
-    });
+    if (office) {
+      router.put(`/offices/${office.id}`, formatted, {
+        onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
+        },
+      });
+    } else {
+      router.post('/offices', formatted, {
+          onError: (errors) => {
+          notification.error({ title: Object.values(errors)[0] });
+          },
+      });
+    }
   };
 
   return (
     <div style={{ padding: 40 }}>
-      <h1>Edit Office</h1>
+      <Title level={2} style={{ margin: 0, marginBottom:'20px' }}>
+        {office ? 'Edit Office' : 'Create Office'}
+      </Title>
       <Form
-        initialValues={office}
+        initialValues={initialValues}
         onFinish={handleSubmit}
-        style={{ maxWidth: 400 }}
+        labelAlign="left"
+        labelCol={{ span: 4 }}
+        wrapperCol={{ span: 20 }}
       >
+
+        <Form.Item
+          name="night_shift"
+          label="Abilita Orario Notturno"
+          valuePropName="checked"
+        >
+          <Checkbox style={{ width: '100%' }} />
+        </Form.Item>
+
         <Form.Item name="nome" label="Nome" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -69,37 +86,29 @@ const Edit: Page<Props> = ({ office }) => {
         <Form.Item
           name="inizioOrarioIngresso"
           label="Inizio Ingresso"
-          rules={[{ required: true }]}
-          getValueProps={(val) => ({ value: StringToTime(val) })}
+          rules={[{ required: true, message: 'Seleziona l’orario'  }]}
         >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item
           name="fineOrarioIngresso"
           label="Fine Ingresso"
-          rules={[{ required: true }]}
-          getValueProps={(val) => ({ value: StringToTime(val) })}
-        >
-          <TimePicker format={FORMAT} />
-        </Form.Item>
+          dependencies={['inizioOrarioIngresso', 'night_shift']}
+          rules={[{ required: true, message: 'Seleziona l’orario'  }, 
+            ({ getFieldValue }) => ({
+            validator: (_, value) => {
+              const start = getFieldValue('inizioOrarioIngresso');
+              const isNight = getFieldValue('night_shift');
 
-        <Form.Item
-          name="inizioOrarioUscita"
-          label="Inizio Uscita"
-          rules={[{ required: true }]}
-          getValueProps={(val) => ({ value: StringToTime(val) })}
+              const isInvalid = !isNight && value && start && value.isBefore(start)
+              return isInvalid 
+                ? Promise.reject('Deve essere dopo o uguale all’inizio ingresso (o abilita Orario Notturno se va al giorno seguente)')
+                : Promise.resolve();
+            }
+          })]}
         >
-          <TimePicker format={FORMAT} />
-        </Form.Item>
-
-        <Form.Item
-          name="fineOrarioUscita"
-          label="Fine Uscita"
-          rules={[{ required: true }]}
-          getValueProps={(val) => ({ value: StringToTime(val) })}
-        >
-          <TimePicker format={FORMAT} />
+          <TimePicker style={{ width: '100%' }} format={FORMAT} />
         </Form.Item>
 
         <Form.Item>

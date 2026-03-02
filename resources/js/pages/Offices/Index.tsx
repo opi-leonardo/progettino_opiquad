@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { router } from '@inertiajs/react';
-import { Table, Button, Typography, Popconfirm, message, Alert } from 'antd';
+import { Table, Button, Space, Typography, Popconfirm, notification } from 'antd';
 import Layout from '../Layout';
 import { Link } from '@inertiajs/react';
-import { usePage } from '@inertiajs/react';
+import { WarningFilled } from '@ant-design/icons';
 
 interface Office {
   id: number;
   nome: string;
   inizioOrarioIngresso: string;
   fineOrarioIngresso: string;
-  inizioOrarioUscita: string;
-  fineOrarioUscita: string;
+}
+
+interface PaginatedData<T> {
+  data: T[];
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
 }
 
 interface Props {
-  offices: Office[];
+  offices: PaginatedData<Office>;
+  success?: string;
+  error?: string;
 }
 
 type Page<P = {}> = React.FC<P> & {
@@ -24,19 +32,45 @@ type Page<P = {}> = React.FC<P> & {
 
 const { Title } = Typography;
 
-const Index: Page<Props> = ({ offices }) => {
+const Index: Page<Props> = ({ offices, success, error }) => {
 
-  const { errors } = usePage().props as any;
+  const handleTableChange = (pagination: any) => {
+    router.get('/offices', { page: pagination.current }, {
+      preserveState: true,
+      replace: true
+    });
+  };
 
-  // dopo il Title:
-  {errors?.error && <Alert message={errors.error} type="error" showIcon style={{ marginBottom: 16 }} />}
+  const handleDelete = (id: number) => {
+    router.delete(`/offices/${id}`, {
+      onError: (errors) => {
+        notification.error({ title: Object.values(errors)[0] });
+      },
+    });
+  };
+
+  useEffect(() => {
+    if (success) {
+      notification.success({ title: success });
+    }
+  }, [success]);
 
   const columns = [
-    { title: 'Nome', dataIndex: 'nome', key: 'nome' },
-    { title: 'Inizio Ingresso', dataIndex: 'inizioOrarioIngresso', key: 'inizioOrarioIngresso' },
-    { title: 'Fine Ingresso', dataIndex: 'fineOrarioIngresso', key: 'fineOrarioIngresso' },
-    { title: 'Inizio Uscita', dataIndex: 'inizioOrarioUscita', key: 'inizioOrarioUscita' },
-    { title: 'Fine Uscita', dataIndex: 'fineOrarioUscita', key: 'fineOrarioUscita' },
+    {
+      title: 'Nome',
+      dataIndex: 'nome',
+      key: 'nome',
+    },
+    {
+      title: 'Inizio Ingresso',
+      dataIndex: 'inizioOrarioIngresso',
+      key: 'inizioOrarioIngresso',
+    },
+    {
+      title: 'Fine Ingresso',
+      dataIndex: 'fineOrarioIngresso',
+      key: 'fineOrarioIngresso',
+    },
     {
       title: 'Actions',
       key: 'actions',
@@ -45,21 +79,17 @@ const Index: Page<Props> = ({ offices }) => {
           <Link href={`/offices/${record.id}/edit`}>
             <Button type="link">Edit</Button>
           </Link>
-
           <Popconfirm
-            placement="top"
-            title="Elimina ufficio"
-            description="Sei sicuro di voler eliminare questo ufficio?"
-            okText="Sì"
+            title="Delete office"
+            description="Are you sure you want to delete this office and its users?"
+            icon={<WarningFilled style={{ color: 'red' }}/>}
+            okText="Yes"
             cancelText="No"
-            onConfirm={() => {
-              router.delete(`/offices/${record.id}`, {
-                onSuccess: () => message.success('Ufficio eliminato con successo!'),
-                onError: () => message.error("Errore durante l'eliminazione."),
-              });
-            }}
+            onConfirm={() => handleDelete(record.id)}
           >
-            <Button type="link" danger>Delete</Button>
+            <Button type="link" danger>
+              Delete
+            </Button>
           </Popconfirm>
         </>
       ),
@@ -68,14 +98,29 @@ const Index: Page<Props> = ({ offices }) => {
 
   return (
     <div style={{ padding: 40 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-        <Title level={2} style={{ margin: 0 }}>All Offices</Title>
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom:"20px" }}>
+        <Title level={2} style={{ margin: 0 }}>
+          All Offices
+        </Title>
+
+
         <Link href="/offices/create">
           <Button type="primary">Add Office</Button>
         </Link>
       </div>
 
-      <Table dataSource={offices} columns={columns} rowKey="id" />
+      <Table
+        dataSource={offices.data}
+        columns={columns}
+        rowKey="id"
+        pagination={{
+          current: offices.current_page,
+          pageSize: offices.per_page,
+          total: offices.total,
+        }}
+        onChange={handleTableChange}
+      />
     </div>
   );
 };
