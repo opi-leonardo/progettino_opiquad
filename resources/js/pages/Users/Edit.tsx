@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, router } from '@inertiajs/react';
-import { Form, Input, Button, Typography, Select, notification, Alert } from 'antd';
+import { Form, Input, Button, Typography, Select, notification, Alert, InputNumber } from 'antd';
 import Layout from '../Layout';
 
 interface Office {
@@ -13,9 +13,10 @@ interface User {
   nome: string;
   cognome: string;
   email: string;
-  giornoCorto: string;
+  giornoCorto?: string;
   workingHours: string;
   office_id?: string;
+  oreDiLavoro: string
   offices?: { id: number; name: string } | null;
 }
 
@@ -36,7 +37,8 @@ const Edit: Page<Props> = ({ user, offices }) => {
   const initialValues = user ? {    
     ...user, 
     giornoCorto: Number(user.giornoCorto),
-    office_id: Number(user.office_id)
+    office_id: Number(user.office_id),
+    oreDiLavoro: Number(user.oreDiLavoro),
   } : undefined;
 
   const handleSubmit = (values: any) => {
@@ -97,8 +99,8 @@ const Edit: Page<Props> = ({ user, offices }) => {
           <Input type={'email'}/>
         </Form.Item>
 
-        <Form.Item name="oreDiLavoro" label="Ore di Lavoro" rules={[{ required: true }]}>
-          <Input type={'number'} min="0,01" max="24,00"/>
+        <Form.Item name="oreDiLavoro" label="Ore di Lavoro" rules={[{ required: true }, { type: 'number', min: 0.01, max: 24, message: 'Il valore deve essere compreso tra 0.01 e 24' }]}>
+          <InputNumber type={'number'} min={0.01} max={24} step={0.5} placeholder="8" style={{ width: '100%' }}/>
         </Form.Item>
 
         <Form.Item name="giornoCorto" label="Giorno Corto">

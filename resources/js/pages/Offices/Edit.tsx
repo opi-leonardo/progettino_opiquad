@@ -28,8 +28,8 @@ const Edit: Page<Props> = ({ office }) => {
 
   const initialValues = office ? {
     ...office,
-    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso, "HH:mm:ss") : null,
-    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, "HH:mm:ss") : null,
+    inizioOrarioIngresso: office.inizioOrarioIngresso ? dayjs(office.inizioOrarioIngresso, 'YYYY-MM-DD HH:mm:ss') : null,
+    fineOrarioIngresso: office.fineOrarioIngresso ? dayjs(office.fineOrarioIngresso, 'YYYY-MM-DD HH:mm:ss') : null,
     night_shift: office.night_shift === 1,
   } : undefined;
 

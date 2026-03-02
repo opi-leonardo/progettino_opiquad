@@ -32,6 +32,7 @@ class StoreUserRequest extends FormRequest
             ],
             'giornoCorto' => 'nullable|integer|min:0|max:6',
             'office_id' => 'required|exists:offices,id',
+            'oreDiLavoro' => 'required|numeric|min:0.01|max:24',
         ];
     }
 }
