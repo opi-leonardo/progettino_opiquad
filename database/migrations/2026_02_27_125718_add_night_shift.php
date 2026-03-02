@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_enabled');
+        Schema::table('offices', function (Blueprint $table) {
+            $table->dropColumn('night_shift');
         });
     }
 };
